@@ -218,7 +218,7 @@ methods:{
 ## 组件 day3
 #### 定义组件❤️❤️❤️❤️
 组件是可复用的 Vue 实例
-![image](http://note.youdao.com/yws/res/5999/C70EB48D8CD64C3AAB38ADA2E9BF9A33)  
+![image](./resource/WechatIMG24.png)  
 使用Vue.component("my-header",{template:""})定义组件，第一个参数是组件名称。
 组件名称的定义有两种方式：
 * kebab-case `Vue.component('my-component-name', { /* ... */ })`
@@ -292,7 +292,7 @@ props:{
 }
 ```
 如果类型错误，报错：
-![image](http://note.youdao.com/yws/res/6003/B7970DFC70ED4A0F9DBD99F03CE282E7)
+![image](./resource/WechatIMG25.png)
 
 数据的类型有：
 - String
@@ -323,12 +323,12 @@ props:{
 }
 ```
 如果设置了 required:true，name当不传该值的时候就会报错：
-![image](http://note.youdao.com/yws/res/6007/8890E54B02844A3097182643E241D0CF)
+![image](./resource/WechatIMG26.png)
 
 props是==单向的数据==流，==从父组件传递到子组件，不应该在子组件内修改prop的值。
 如果需要改变prop，可以将prop赋值给本地的一个data==
 否则就会报错：
-![image](https://note.youdao.com/src/E7F768BDB0744DE9A53B12370E351026)
+![image](./resource/WechatIMG27.png)
 #### 从组件内向组件外传递事件
 采用自定义事件的方式，可以实现从组件内部传递数据到组件外
 示例代码：
@@ -447,7 +447,7 @@ Vue.component('my-article', {
 6. updated 数据已经更新，并且更新DOM
 7. beforeDestroy 组件卸载前执行
 8. destroyed 组件卸载后执行
-![image](http://note.youdao.com/yws/res/6011/WEBRESOURCEbb6171398b27f355bd0d60c48b58aded)
+![image](./resource/lifecycle.png)
 示例代码：
 
 ```
@@ -842,25 +842,25 @@ class Observer{
  查看是或安装成功：
  `vue`
  
-![image](https://note.youdao.com/src/2B7559DE26314D2194E9DE1F78422472)
+![image](./resource/WechatIMG28.png)
 
 vue安装好之后，使用vue-cli生成一个项目
 vue list 查看可用的模板
-![image](https://note.youdao.com/src/7D3D8F63E56C435794E7443EAD92CE56)
+![image](./resource/WechatIMG29.png)
 使用 webpack模板创建项目：
 ` vue init webpack my-project `
-![image](https://note.youdao.com/src/48112AFF0BB14345B0384CD72D6ADEBB)
+![image](./resource/WechatIMG30.png)
 项目创建成功之后，界面如下：
-![image](https://note.youdao.com/src/4531079B86074B26AF748834F8BC4389)
+![image](./resource/WechatIMG31.png)
 
 启动项目：
 1. `cd my-project` 进入到项目目录
 2. `npm run dev`  启动项目
-![image](https://note.youdao.com/src/900164E3C31F496989EDD450278192A8)
+![image](./resource/WechatIMG32.png)
 然后打开浏览器，在地址栏输入： http://localhost:8080 回车
  
 ##### 使用vscode导入项目，查看目录结构
-![image](https://note.youdao.com/src/452C74BAC35846F287447384A92ADFF2)
+![image](./resource/WechatIMG33.png)
 
 * index.html  单页面的那个html页面文件
 * /static 静态文件目录

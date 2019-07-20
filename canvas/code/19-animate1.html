@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    canvas{border:solid 1px #888;}
+    </style>
+</head>
+<body>
+    <canvas id="mycanvas" width="500" height="500">
+        您的浏览器不支持Canvas🙂
+    </canvas>
+
+    <script>
+    
+    //获取渲染上下文对象
+    const canvas = document.getElementById('mycanvas');
+    const ctx = canvas.getContext('2d');
+
+    if (canvas.getContext){
+       
+        //移动原点到画布中心
+        ctx.translate(250,250);
+        //保存当前状态
+        ctx.save();
+        //设置画笔颜色
+        ctx.fillStyle = "#009";
+        //绘制中心蓝色大圆
+        ctx.arc(0,0,50,0,Math.PI*2);
+        ctx.fill()
+        
+        //设置转动角度
+        let angle = Math.PI/180;
+        function draw(){
+            //清除画布
+            ctx.clearRect(88,-12,24,24)
+            //恢复之前的状态
+            ctx.restore();
+            //开启新的路径，否则会和中心圆连在一起
+            ctx.beginPath()
+            //设置小圆颜色
+            ctx.fillStyle = "#666";
+            //小圆转动角度
+            ctx.rotate(angle)
+            //绘制小圆
+            ctx.arc(100,0,10,0,Math.PI*2);
+            ctx.fill()
+            //调用requestAnimationFrame，重复执行 draw函数
+            requestAnimationFrame(draw)
+        }
+
+        //初次调用draw，开启动画
+        draw()
+    } else {
+        // 提示不支持canvas
+    }
+
+    </script>
+</body>
+</html>

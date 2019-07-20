@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    canvas{border:solid 1px #888;}
+    </style>
+</head>
+<body>
+    <canvas id="mycanvas" width="500" height="500">
+        您的浏览器不支持Canvas🙂
+    </canvas>
+
+    <script>
+    
+    //获取渲染上下文对象
+    const canvas = document.getElementById('mycanvas');
+    // const ctx = canvas.getContext('2d');
+
+    if (canvas.getContext){
+        var ctx = canvas.getContext('2d');
+        // 在这里开始绘画
+       
+        //三次贝塞尔曲线
+        ctx.beginPath();
+        ctx.moveTo(75,40);
+        ctx.bezierCurveTo(75,37,70,25,50,25);
+        ctx.bezierCurveTo(20,25,20,62.5,20,62.5);
+        ctx.bezierCurveTo(20,80,40,102,75,120);
+        ctx.bezierCurveTo(110,102,130,80,130,62.5);
+        ctx.bezierCurveTo(130,62.5,130,25,100,25);
+        ctx.bezierCurveTo(85,25,75,37,75,40);
+        ctx.fill();
+        
+    } else {
+        // 提示不支持canvas
+    }
+
+    </script>
+</body>
+</html>

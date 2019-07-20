@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    canvas{border:solid 1px #888;}
+    </style>
+</head>
+<body>
+    <canvas id="mycanvas" width="500" height="500">
+        您的浏览器不支持Canvas🙂
+    </canvas>
+
+    <script>
+    
+    //获取渲染上下文对象
+    const canvas = document.getElementById('mycanvas');
+    const ctx = canvas.getContext('2d');
+
+    if (canvas.getContext){
+       
+        // 创建渐变
+        var radgrad = ctx.createRadialGradient(45,45,10,52,50,30);
+        radgrad.addColorStop(0, '#A7D30C');
+        radgrad.addColorStop(0.9, '#019F62');
+        radgrad.addColorStop(1, 'rgba(1,159,98,0)');
+       
+        // 画图形
+     
+        ctx.fillStyle = radgrad;
+        ctx.fillRect(0,0,150,150);
+        
+    } else {
+        // 提示不支持canvas
+    }
+
+    </script>
+</body>
+</html>

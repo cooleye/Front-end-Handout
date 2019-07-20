@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    html,body{width: 100%;height: 100%;}
+    body{margin: 0;padding: 0;overflow: hidden;}
+    /* canvas{background: #000;} */
+    </style>
+</head>
+<body>
+    <canvas id="mycanvas" width="1280" height="800">
+        您的浏览器不支持Canvas🙂
+    </canvas>
+    <script>
+    
+    //获取渲染上下文对象
+    const canvas = document.getElementById('mycanvas');
+    const ctx = canvas.getContext('2d');
+    //获取屏幕大小
+    let screenWidth = window.screen.width;
+    let screenHeight = window.screen.height;
+    // console.log(screenWidth,screenHeight)
+    if (canvas.getContext){
+        //保存初始状态
+        ctx.save();
+        //设置点的个数
+        const POINT_NUMBER = 100;
+        //保存点坐标的数组
+        let points = [];
+        //移动速度
+        let SPEED = 1;
+        
+        //初始化
+        function init(){
+            //清空画布
+            ctx.clearRect(0,0,1280,800);
+            //绘制点
+            for(let i = 0;i < POINT_NUMBER;i++){
+                //随机坐标
+                let randX = Math.random()*screenWidth;
+                let randY = Math.random()*screenHeight;
+                //随机方向速率
+                let xd = Math.random()*2-1;
+                let yd = Math.random()*2-1;
+                //保存点坐标
+                points.push({x:randX,y:randY,xd:xd,yd:yd});
+                ctx.beginPath()
+                //绘制点
+                ctx.arc(randX,randY,5,0,Math.PI*2);
+                ctx.fill()
+            }
+        }
+
+        init()
+
+        function draw(){
+
+            ctx.clearRect(0,0,1280,800);
+            //绘制点
+            for(let i = 0;i < POINT_NUMBER;i++){
+                ctx.beginPath()
+                let point = points[i];
+                //根据点当前坐标和移动速率，更新点坐标
+                let px = point.x + point.xd*SPEED;
+                let py = point.y + point.yd*SPEED;
+                //保持点在屏幕内
+                if(px > 1280){
+                    px = 1280;
+                    point.xd*=-1;
+                }
+                if(px < 0){
+                    px = 0;
+                    point.xd*=-1;
+                }
+                if(py < 0){
+                    py = 0;
+                    point.yd*=-1;
+                }
+                if(py>800){
+                    point.yd*=-1
+                }
+                point.x = px;
+                point.y = py;
+                //更新数组点坐标
+                points[i] = point;
+                //重绘点
+                ctx.arc(px,py,5,0,Math.PI*2);
+                ctx.fill()
+            }
+
+            /*
+            * 遍历数组，使数组的点两两比较，当点距离小于200时，绘制线段
+            */
+            for(let i = 0; i< points.length;i++){
+                //取得第一个点
+                let p1 = points[i];
+                for(let j = 0;j < points.length;j++){
+                    //取得第二个点
+                    let p2 = points[j];
+                    //计算两点距离
+                    let l = Math.sqrt(Math.pow(p1.x-p2.x,2) + Math.pow(p1.y-p2.y,2));
+                    //当点距离小于200时，绘制线段
+                    if(l < 200){
+                        ctx.beginPath();
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(p1.x,p1.y);
+                        ctx.lineTo(p2.x,p2.y);
+                        ctx.stroke();
+                        ctx.closePath()
+                    }
+                }
+            }
+            requestAnimationFrame(draw)
+        }
+        //初次调用draw，开启动画
+        draw()
+
+    } else {
+        // 提示不支持canvas
+    }
+
+    </script>
+</body>
+</html>

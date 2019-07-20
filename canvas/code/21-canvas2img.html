@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    canvas{border:solid 1px #888;}
+    </style>
+</head>
+<body>
+    <canvas id="mycanvas" width="500" height="500">
+        您的浏览器不支持Canvas🙂
+    </canvas>
+
+    <button id="saveImg"> 转成图片 </button>
+    <a id="down-btn" download="img"><img src=""  id="preview" alt=""></a>
+    <script>
+    
+    //获取渲染上下文对象
+    const canvas = document.getElementById('mycanvas');
+    const ctx = canvas.getContext('2d');
+
+    if (canvas.getContext){
+        //绘制一个矩形
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0,0,500,500);
+        ctx.fillStyle = "#f00";
+        ctx.font = "48px serif";
+        ctx.fillText("Hello world", 200, 200);
+
+        //点击按钮，把canvas转成图片
+        document.getElementById("saveImg")
+        .addEventListener("click",e =>{
+            //把canvas转成图片数据
+            var mediumQuality = canvas.toDataURL("image/jpeg",0.1);
+            //预览图片
+            document.getElementById("preview").src = mediumQuality;
+            //下载图片
+            document.getElementById("down-btn").href = mediumQuality;
+        })
+        
+    } else {
+        // 提示不支持canvas
+    }
+
+    </script>
+</body>
+</html>

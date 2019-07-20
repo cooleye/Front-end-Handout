@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <canvas id="myCanvas1" width="200" height="200"></canvas><br/>
+        <canvas id="myCanvas2" width="200" height="200"></canvas><br/>
+        <canvas id="myCanvas3" width="200" height="200"></canvas><br/>
+         
+         
+         
+        <script type="text/javascript">
+         
+        //canvasid画布名称,x,y 坐标,radius 半径,maxValue最大值,process 百分比,backColor 中心颜色, proColor 进度颜色, fontColor 中心文字颜色,fonttitle中心文字内容，unit中心文字单位
+        function DrowProcess(canvas,x,y,radius,maxValue,process,backColor,proColor,fontColor,fonttitle,unit){
+            if (canvas.getContext) {
+                var cts = canvas.getContext('2d');
+            }else{
+                return;
+            }
+            cts.beginPath();  
+            // 坐标移动到圆心  
+            cts.moveTo(x, y);  
+            // 画圆,圆心是24,24,半径24,从角度0开始,画到2PI结束,最后一个参数是方向顺时针还是逆时针  
+            cts.arc(x, y, radius, 0, Math.PI * 2, false);  
+            cts.closePath();  
+            // 填充颜色  
+            cts.fillStyle = backColor;  
+            cts.fill();
+         
+            cts.beginPath();  
+            // 画扇形的时候这步很重要,画笔不在圆心画出来的不是扇形  
+            cts.moveTo(x, y);  
+            // 跟上面的圆唯一的区别在这里,不画满圆,画个扇形  
+            cts.arc(x, y, radius, Math.PI * 1.5, Math.PI * 1.5 -  Math.PI * 2 * process / maxValue, true);  
+            cts.closePath();  
+            cts.fillStyle = proColor;  
+            cts.fill(); 
+            
+            //填充背景白色
+            cts.beginPath();  
+            cts.moveTo(x, y); 
+            cts.arc(x, y, radius - (radius * 0.26), 0, Math.PI * 2, true);  
+            cts.closePath();
+            cts.fillStyle = 'rgba(255,255,255,1)';  
+            cts.fill(); 
+         
+            // 画一条线  
+            cts.beginPath();  
+            cts.arc(x, y, radius-(radius*0.30), 0, Math.PI * 2, true);  
+            cts.closePath();  
+            // 与画实心圆的区别,fill是填充,stroke是画线  
+            cts.strokeStyle = backColor;  
+            cts.stroke();  
+              
+            //在中间写字 
+            cts.font = "bold 9pt Arial";  
+            cts.fillStyle = fontColor;  
+            cts.textAlign = 'center';  
+            cts.textBaseline = 'middle';  
+            cts.moveTo(x, y);  
+            cts.fillText(fonttitle+process+unit, x, y);  
+            
+        }
+         
+        function Create(){
+            var canvas1 = document.getElementById('myCanvas1');
+            var canvas2 = document.getElementById('myCanvas2');
+            var canvas3 = document.getElementById('myCanvas3');
+         
+            DrowProcess(canvas1,100,100,55,30,25,'#ddd','#32CD32','#32CD32','名称1:','单位1');
+            DrowProcess(canvas2,100,100,55,50,40,'#ddd','#32CD32','#32CD32','名称2:','单位2');
+            DrowProcess(canvas3,100,100,55,100,40,'#ddd','#32CD32','#32CD32','名称3:','单位3');
+         
+        }
+         
+        Create();
+         
+        </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    canvas{border:solid 1px #888;}
+    </style>
+</head>
+<body>
+    <canvas id="mycanvas" width="500" height="500">
+        您的浏览器不支持Canvas🙂
+    </canvas>
+
+    <script>
+    
+    //获取渲染上下文对象
+    const canvas = document.getElementById('mycanvas');
+    const ctx = canvas.getContext('2d');
+    if (canvas.getContext){
+        //绘制中心圆
+        ctx.fillStyle = "#f00";
+        ctx.translate(250,250);
+        ctx.arc(0,0,20,0,Math.PI*2);
+        ctx.fill()
+        //绘制周围6个圆
+        ctx.fillStyle = "#00a";
+        for(let i = 0; i < 6; i++){
+            ctx.beginPath();
+            ctx.rotate(Math.PI/3);
+            ctx.arc(100,0,20,0,Math.PI*2);
+            ctx.fill()
+        }
+    } else {
+        // 提示不支持canvas
+    }
+
+    </script>
+</body>
+</html>

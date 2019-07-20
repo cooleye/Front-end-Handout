@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    canvas{border:solid 1px #888;}
+    </style>
+</head>
+<body>
+    <canvas id="mycanvas" width="500" height="500">
+        您的浏览器不支持Canvas🙂
+    </canvas>
+
+    <script>
+    
+    //获取渲染上下文对象
+    const canvas = document.getElementById('mycanvas');
+    // const ctx = canvas.getContext('2d');
+
+    if (canvas.getContext){
+        var ctx = canvas.getContext('2d');
+       
+        var offset = 0;
+
+        function draw() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            ctx.setLineDash([4, 2]);
+            ctx.lineDashOffset = -offset;
+            ctx.strokeRect(10,10, 100, 100);
+        }
+        // draw()
+        function march() {
+            offset++;
+            if (offset > 16) {
+                offset = 0;
+            }
+            draw();
+            setTimeout(march, 20);
+        }
+
+        march();
+
+    } else {
+        // 提示不支持canvas
+    }
+
+    </script>
+</body>
+</html>

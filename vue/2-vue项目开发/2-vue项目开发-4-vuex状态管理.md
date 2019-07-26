@@ -171,7 +171,7 @@ export default {
 * Getter 可以认为是 store 的计算属性
 * mutation 更改 Vuex 的 store 中的状态的唯一方法是提交 mutation
 * Action  Action 提交的是 mutation，而不是直接变更状态，可以包含异步操作
-![image](http://note.youdao.com/yws/res/6785/C60C839A134542C1B42522506D399922)
+![image](./respurce/vuex.png)
 
 ## 4. 简单示例
 

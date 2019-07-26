@@ -175,7 +175,7 @@ export default {
 5. v-leave-active：定义离开过渡生效时的状态。在整个离开过渡的阶段中应用，在离开过渡被触发时立刻生效，在过渡/动画完成之后移除。这个类可以被用来定义离开过渡的过程时间，延迟和曲线函数。
 6. v-leave-to: 2.1.8版及以上 定义离开过渡的结束状态。在离开过渡被触发之后下一帧生效 (与此同时 v-leave 被删除)，在过渡/动画完成之后移除。
 
-![image](http://note.youdao.com/yws/res/6890/2B9F7FE30DE94BAF93BF8D81A46BCD4E)
+![image](./respurce/ani.png)
 
 注意：如果在<transition>上没有添加name属性，则类名前缀默认为v-，添加name属性，则使用 属性名作为前缀。
 

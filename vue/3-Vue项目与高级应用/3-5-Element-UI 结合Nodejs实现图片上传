@@ -1,0 +1,93 @@
+## 使用Element-UI上传组件
+
+#### 1. <el-upload>
+ELement-ui提供了上传组件：https://element.eleme.cn/#/zh-CN/component/upload
+
+示例代码：
+```
+<el-upload
+  action="https://jsonplaceholder.typicode.com/posts/"
+  list-type="picture-card"
+  :on-preview="handlePictureCardPreview"
+  :on-remove="handleRemove">
+  <i class="el-icon-plus"></i>
+</el-upload>
+<el-dialog :visible.sync="dialogVisible">
+  <img width="100%" :src="dialogImageUrl" alt="">
+</el-dialog>
+<script>
+  export default {
+    data() {
+      return {
+        dialogImageUrl: '',
+        dialogVisible: false
+      };
+    },
+    methods: {
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      }
+    }
+  }
+</script>
+```
+在开发中，我们需要把 el-upload 组件的action属性替换成我们自己的接口。
+
+#### 2. 实现上传接口
+这里我们用Express + multer中间件来实现图片上传。
+安装 multer中间件：
+```
+npm i multer -S
+```
+图片上传是post请求，需要用到body-parser中间件：
+```
+npm i body-parser -S
+```
+使用multer设置图片保存路径：
+```
+//设置图片上传保存路径
+app.use(multer({ dest: 'public/upload/'}).array('file'));
+```
+其中 dest设置的就是图片保存路径。这个文件夹会自动创建。 `file`是上传的文件名。这个值可以通过 `<el-upload>`的name属性来修改。
+例如，`<el-upload name='image'>`，则服务器端也要设置为：
+
+```
+app.use(multer({ dest: 'public/upload/'}).array('image'));
+```
+
+服务器端完整代码：
+```
+var express = require('express');
+var multer  = require('multer');//图片上传中间件
+const cors = require('cors');
+// 处理post请求
+var bodyParser = require('body-parser');   
+const app = express();
+//允许跨域
+app.use(cors());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+//设置图片上传保存路径
+app.use(multer({ dest: 'public/upload/'}).array('file'));
+
+
+app.post('/upload',function(req,res){
+
+    // 获取上传的文件名
+    var file = req.files[0];
+
+    res.send(file.filename)
+
+})
+
+app.listen(3000,function(){
+    console.log('server start....')
+})
+
+```

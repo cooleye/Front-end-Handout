@@ -15,13 +15,13 @@
 创建一个目录，进入到目录中执行 `git init` ,使用命令`ls -la `查看所有文件，看到 *.git* 的文件说明成功创建仓库。
 
 #### 4.把文件添加到仓库
-a)建一个文件放到仓库中，例如readme.txt, 
-b)执行 git add readme.txt
-c)提交 执行 git commit -m ‘第一次提交’   -m是本次提交的注释
+1. 建一个文件放到仓库中，例如readme.txt, 
+2. 执行 git add readme.txt
+3. 提交 执行 git commit -m ‘第一次提交’   -m是本次提交的注释
 
 ## 4. 常用git命令
 #### 1. 查看状态
-`.git status `
+`git status `
 
 #### 2. 删除文件
 `git rm file`   
@@ -171,3 +171,35 @@ git config --global credential.helper wincred
     ```
     
 11. 继续开发，重复步骤6、7
+
+
+----
+
+## 给成员添加权限
+
+#### 1.   找到组织
+![image](http://note.youdao.com/yws/res/7212/E426894C7C0C42BE9A16B0499625C924)
+
+##### 2. 查看团队成员
+
+![image](http://note.youdao.com/yws/res/7216/0490AFBF9FAF42C9A7F8652874EFC3F9)
+
+#### 3. 找到需要添加权限的人
+
+![image](http://note.youdao.com/yws/res/7218/57CBA168CCA345589A66B60ADB7E1F24)
+
+点击 Manage
+
+#### 4. 然后：
+![image](http://note.youdao.com/yws/res/7222/3BEBCAAAB51D4FBE89A7CD56D981CAE2)
+
+
+#### 5. 接下来：
+![image](http://note.youdao.com/yws/res/7224/85A29ADE6B3E45FC8A94FFC336D1C55E)
+
+#### 6. 添加 write权限
+
+![image](http://note.youdao.com/yws/res/7227/B9821E60D4FF4015846AEF375C2B1348)
+
+
+之后，团队成员就可以向仓库中推送代码了。

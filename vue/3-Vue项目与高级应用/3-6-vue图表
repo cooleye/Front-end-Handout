@@ -1,0 +1,109 @@
+## vue 图标
+在vue中使用echarts图标。
+
+这里我们用到了 vue-echarts这个库
+：https://github.com/ecomfe/vue-echarts/blob/master/README.zh_CN.md
+
+
+#### 1. 安装
+```
+npm install echarts vue-echarts
+```
+
+#### 2. 如何使用
+之后就可以在组件中使用了。
+在组件中引入vue-echarts和图标模块：
+```
+import ECharts from 'vue-echarts' // 在 webpack 环境下指向 components/ECharts.vue
+
+// 手动引入 ECharts 各模块来减小打包体积
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/component/tooltip'
+```
+在组件里注册：
+```
+ components: {
+    'v-chart': ECharts
+  },
+  
+```
+注意设置canvas 的大小，如果使用100%，则父元素也要使用百分比：
+```
+html,body{
+  width: 100%;
+  height: 100%;
+}
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+.container,.echarts ,canvas{
+  width: 100%;
+  height: 100%;
+  border:solid 1px #000;
+}
+```
+完整代码：
+```
+<template>
+    <div class="container">
+        <h1>chart</h1>
+        <v-chart :options="chartData" width="500" height="500"/>
+    </div>
+</template>
+
+
+
+<script>
+import ECharts from 'vue-echarts'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/chart/pie'
+
+import 'echarts/lib/chart/radar'
+import 'echarts/lib/chart/bar'
+// import 'echarts/lib/component/polar'
+
+export default {
+  components: {
+    'v-chart': ECharts
+  },
+  data () {
+    let data = []
+
+    return {
+      chartData:  {
+            xAxis: {
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [120, 200, 150, 80, 70, 110, 130],
+                type: 'bar'
+            }]
+        }
+    }
+    }
+}
+</script>
+
+<style>
+/**
+ * The default size is 600px×400px, for responsive charts
+ * you may need to set percentage values as follows (also
+ * don't forget to provide a size for the container).
+ */
+.container,.echarts ,canvas{
+  width: 100%;
+  height: 100%;
+  border:solid 1px #000;
+}
+
+</style>
+```
+
+#### Echarts 官方示例：https://echarts.baidu.com/examples/
+#### Echarts 官方文档：https://www.echartsjs.com/tutorial.html#5%20%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8B%20ECharts

@@ -4,28 +4,28 @@ React中组件也有生命周期，也就是说也有很多钩子函数供我们
 #### 初始化
 在组件初始化阶段会执行
 
-* constructor
-* static getDerivedStateFromProps()
-* componentWillMount() / UNSAFE_componentWillMount()
-* render()
-* componentDidMount()
+* `constructor`
+* `static getDerivedStateFromProps()`
+* `componentWillMount()` / `UNSAFE_componentWillMount()`
+* `render()`
+* `componentDidMount()`
 
 #### 更新阶段
 props或state的改变可能会引起组件的更新，组件重新渲染的过程中会调用以下方法：
 
-* componentWillReceiveProps() / UNSAFE_componentWillReceiveProps()
-* static getDerivedStateFromProps()
-* shouldComponentUpdate()
-* componentWillUpdate() / UNSAFE_componentWillUpdate()
-* render()
-* getSnapshotBeforeUpdate()
-* componentDidUpdate()
+* `componentWillReceiveProps()` / `UNSAFE_componentWillReceiveProps()`
+* `static getDerivedStateFromProps()`
+* `shouldComponentUpdate()`
+* `componentWillUpdate()` / `UNSAFE_componentWillUpdate()`
+* `render()`
+* `getSnapshotBeforeUpdate()`
+* `componentDidUpdate()`
 
 #### 卸载阶段
-componentWillUnmount()
+`componentWillUnmount()`
 
 #### 错误处理
-componentDidCatch()
+`componentDidCatch()`
 
 #### 各生命周期详解
 
@@ -33,9 +33,9 @@ componentDidCatch()
 
 React组件的构造函数在挂载之前被调用。在实现React.Component构造函数时，需要先在添加其他内容前，调用super(props)，用来将父组件传来的props绑定到这个类中，使用this.props将会得到。
 
-官方建议不要在constructor引入任何具有副作用和订阅功能的代码，这些应当使用componentDidMount()。
+官方建议不要在`constructor`引入任何具有副作用和订阅功能的代码，这些应当使用`componentDidMount()`。
 
-constructor中应当做些初始化的动作，如：初始化state，将事件处理函数绑定到类实例上，但也不要使用setState()。如果没有必要初始化state或绑定方法，则不需要构造constructor，或者把这个组件换成纯函数写法。
+`constructor`中应当做些初始化的动作，如：初始化state，将事件处理函数绑定到类实例上，但也不要使用setState()。如果没有必要初始化state或绑定方法，则不需要构造`constructor`，或者把这个组件换成纯函数写法。
 
 当然也可以利用props初始化state，在之后修改state不会对props造成任何修改，但仍然建议大家提升状态到父组件中，或使用redux统一进行状态管理。
 ```
@@ -49,29 +49,31 @@ constructor(props) {
 
 ##### 2.static getDerivedStateFromProps(nextProps, prevState)
 
-getDerivedStateFromProps 是react16.3之后新增，在组件实例化后，和接受新的props后被调用。他必须返回一个对象来更新状态，或者返回null表示新的props不需要任何state的更新。
+`getDerivedStateFromProps` 是react16.3之后新增，在组件实例化后，和接受新的props后被调用。他必须返回一个对象来更新状态，或者返回null表示新的props不需要任何state的更新。
 
 如果是由于父组件的props更改，所带来的重新渲染，也会触发此方法。
 
-调用steState()不会触发getDerivedStateFromProps()。
+调用`steState()`不会触发`getDerivedStateFromProps()`。
 
-之前这里都是使用constructor+componentWillRecieveProps完成相同的功能的
+之前这里都是使用`constructor+componentWillRecieveProps`完成相同的功能的
 
 ##### 3. componentWillMount() / UNSAFE_componentWillMount()
-componentWillMount()将在React未来版本(官方说法 17.0)中被弃用。UNSAFE_componentWillMount()在组件挂载前被调用，在这个方法中调用setState()不会起作用，是由于他在render()前被调用。
+`componentWillMount()`将在React未来版本(官方说法 17.0)中被弃用。
+`UNSAFE_componentWillMount()`在组件挂载前被调用，在这个方法中调用setState()不会起作用，是由于他在render()前被调用。
 
-为了避免副作用和其他的订阅，官方都建议使用componentDidMount()代替。这个方法是用于在服务器渲染上的唯一方法。这个方法因为是在渲染之前被调用，也是惟一一个可以直接同步修改state的地方。
+为了避免副作用和其他的订阅，官方都建议使用`componentDidMount()`代替。这个方法是用于在服务器渲染上的唯一方法。这个方法因为是在渲染之前被调用，也是惟一一个可以直接同步修改state的地方。
 
 ##### 4.render()
 render()方法是必需的。当他被调用时，他将计算this.props和this.state，并返回以下一种类型：
 
-React元素。通过jsx创建，既可以是dom元素，也可以是用户自定义的组件。
-字符串或数字。他们将会以文本节点形式渲染到dom中。
-Portals。react 16版本中提出的新的解决方案，可以使组件脱离父组件层级直接挂载在DOM树的任何位置。  4. null，什么也不渲染
-布尔值。也是什么都不渲染。
+* React元素。通过jsx创建，既可以是dom元素，也可以是用户自定义的组件。
+* 字符串或数字。他们将会以文本节点形式渲染到dom中。
+* Portals。react 16版本中提出的新的解决方案，可以使组件脱离父组件层级直接挂载在DOM树的任何位置。
+* null，什么也不渲染
+* 布尔值。也是什么都不渲染。
 当返回null,false,ReactDOM.findDOMNode(this)将会返回null，什么都不会渲染。
 
-render()方法必须是一个纯函数，他不应该改变state，也不能直接和浏览器进行交互，应该将事件放在其他生命周期函数中。 如果shouldComponentUpdate()返回false，render()不会被调用。
+render()方法必须是一个纯函数，他不应该改变state，也不能直接和浏览器进行交互，应该将事件放在其他生命周期函数中。 如果`shouldComponentUpdate()`返回false，render()不会被调用。
 
 ##### 5. componentDidMount
 componentDidMount在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。
@@ -81,36 +83,36 @@ componentDidMount在组件被装配后立即调用。初始化使得DOM节点应
 如果要初始化第三方的dom库，也在这里进行初始化。只有到这里才能获取到真实的dom.
 
 ##### 6.componentWillReceiveProps()/UNSAFE_componentWillReceiveProps(nextProps)
-官方建议使用getDerivedStateFromProps函数代替componentWillReceiveProps。当组件挂载后，接收到新的props后会被调用。如果需要更新state来响应props的更改，则可以进行this.props和nextProps的比较，并在此方法中使用this.setState()。
+官方建议使用`getDerivedStateFromProps`函数代替`componentWillReceiveProps`。当组件挂载后，接收到新的props后会被调用。如果需要更新state来响应props的更改，则可以进行this.props和nextProps的比较，并在此方法中使用this.setState()。
 
 如果父组件会让这个组件重新渲染，即使props没有改变，也会调用这个方法。
 
 React不会在组件初始化props时调用这个方法。调用this.setState也不会触发。
 
 ##### 7.shouldComponentUpdate(nextProps, nextState)
-调用shouldComponentUpdate使React知道，组件的输出是否受state和props的影响。默认每个状态的更改都会重新渲染，大多数情况下应该保持这个默认行为。
+调用`shouldComponentUpdate`使React知道，组件的输出是否受state和props的影响。默认每个状态的更改都会重新渲染，大多数情况下应该保持这个默认行为。
 
-在渲染新的props或state前，shouldComponentUpdate会被调用。默认为true。这个方法不会在初始化时被调用，也不会在forceUpdate()时被调用。返回false不会阻止子组件在state更改时重新渲染。
+在渲染新的props或state前，`shouldComponentUpdate`会被调用。默认为true。这个方法不会在初始化时被调用，也不会在forceUpdate()时被调用。返回false不会阻止子组件在state更改时重新渲染。
 
-如果shouldComponentUpdate()返回false，componentWillUpdate,render和componentDidUpdate不会被调用。
+如果`shouldComponentUpdate()`返回false，`componentWillUpdate`,`render`和`componentDidUpdate`不会被调用。
 
-官方并不建议在shouldComponentUpdate()中进行深度查询或使用JSON.stringify()，他效率非常低，并且损伤性能。
+官方并不建议在`shouldComponentUpdate()`中进行深度查询或使用JSON.stringify()，他效率非常低，并且损伤性能。
 
 ##### 8.UNSAFE_componentWillUpdate(nextProps, nextState)
-在渲染新的state或props时，UNSAFE_componentWillUpdate会被调用，将此作为在更新发生之前进行准备的机会。这个方法不会在初始化时被调用。
+在渲染新的state或props时，`UNSAFE_componentWillUpdate`会被调用，将此作为在更新发生之前进行准备的机会。这个方法不会在初始化时被调用。
 
-不能在这里使用this.setState()，也不能做会触发视图更新的操作。如果需要更新state或props，调用getDerivedStateFromProps。
+不能在这里使用`this.setState()`，也不能做会触发视图更新的操作。如果需要更新state或props，调用`getDerivedStateFromProps`。
 
 ##### 9.getSnapshotBeforeUpdate()
-在react render()后的输出被渲染到DOM之前被调用。它使您的组件能够在它们被潜在更改之前捕获当前值（如滚动位置）。这个生命周期返回的任何值都将作为参数传递给componentDidUpdate（）。
+在react render()后的输出被渲染到DOM之前被调用。它使您的组件能够在它们被潜在更改之前捕获当前值（如滚动位置）。这个生命周期返回的任何值都将作为参数传递给`componentDidUpdate()`。
 
 ##### 10.componentDidUpdate(prevProps, prevState, snapshot)
-在更新发生后立即调用componentDidUpdate()。此方法不用于初始渲染。当组件更新时，将此作为一个机会来操作DOM。只要您将当前的props与以前的props进行比较（例如，如果props没有改变，则可能不需要网络请求），这也是做网络请求的好地方。
+在更新发生后立即调用`componentDidUpdate()`。此方法不用于初始渲染。当组件更新时，将此作为一个机会来操作DOM。只要您将当前的props与以前的props进行比较（例如，如果props没有改变，则可能不需要网络请求），这也是做网络请求的好地方。
 
-如果组件实现getSnapshotBeforeUpdate()生命周期，则它返回的值将作为第三个“快照”参数传递给componentDidUpdate()。否则，这个参数是undefined。
+如果组件实现`getSnapshotBeforeUpdate()`生命周期，则它返回的值将作为第三个“快照”参数传递给`componentDidUpdate()`。否则，这个参数是undefined。
 
 ##### 11.componentWillUnmount()
-在组件被卸载并销毁之前立即被调用。在此方法中执行任何必要的清理，例如使定时器无效，取消网络请求或清理在componentDidMount中创建的任何监听。
+在组件被卸载并销毁之前立即被调用。在此方法中执行任何必要的清理，例如使定时器无效，取消网络请求或清理在`componentDidMount`中创建的任何监听。
 
 ##### 12.componentDidCatch(error, info)
 错误边界是React组件，可以在其子组件树中的任何位置捕获JavaScript错误，记录这些错误并显示回退UI，而不是崩溃的组件树。错误边界在渲染期间，生命周期方法以及整个树下的构造函数中捕获错误。
@@ -120,7 +122,7 @@ React不会在组件初始化props时调用这个方法。调用this.setState也
 错误边界只会捕获树中下面组件中的错误。错误边界本身不能捕获错误。
 
 ## PureComponent
-PureComponnet里如果接收到的新属性或者是更改后的状态和原属性、原状态相同的话，就不会去重新render了 在里面也可以使用shouldComponentUpdate，而且。是否重新渲染以shouldComponentUpdate的返回值为最终的决定因素。
+PureComponnet里如果接收到的新属性或者是更改后的状态和原属性、原状态相同的话，就不会去重新render了 在里面也可以使用`shouldComponentUpdate`，而且。是否重新渲染以`shouldComponentUpdate`的返回值为最终的决定因素。
 ```
 import React, { PureComponent } from 'react'
 

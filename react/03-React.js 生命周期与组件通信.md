@@ -1,7 +1,7 @@
 ## 1. 组件的生命周期
 React中组件也有生命周期，也就是说也有很多钩子函数供我们使用, 组件的生命周期，我们会分为四个阶段，初始化、运行中、销毁、错误处理(16.3之后)
 
-#### 初始化
+#### 1.1 初始化
 在组件初始化阶段会执行
 
 * `constructor`
@@ -10,7 +10,7 @@ React中组件也有生命周期，也就是说也有很多钩子函数供我们
 * `render()`
 * `componentDidMount()`
 
-#### 更新阶段
+#### 1.2 更新阶段
 props或state的改变可能会引起组件的更新，组件重新渲染的过程中会调用以下方法：
 
 * `componentWillReceiveProps()` / `UNSAFE_componentWillReceiveProps()`
@@ -21,13 +21,13 @@ props或state的改变可能会引起组件的更新，组件重新渲染的过�
 * `getSnapshotBeforeUpdate()`
 * `componentDidUpdate()`
 
-#### 卸载阶段
+#### 1.3 卸载阶段
 `componentWillUnmount()`
 
-#### 错误处理
+#### 1.4 错误处理
 `componentDidCatch()`
 
-#### 各生命周期详解
+#### 1.5 各生命周期详解
 
 ##### 1. constructor(props)
 
@@ -121,7 +121,7 @@ React不会在组件初始化props时调用这个方法。调用this.setState也
 
 错误边界只会捕获树中下面组件中的错误。错误边界本身不能捕获错误。
 
-## PureComponent
+## 2. PureComponent
 PureComponnet里如果接收到的新属性或者是更改后的状态和原属性、原状态相同的话，就不会去重新render了 在里面也可以使用`shouldComponentUpdate`，而且。是否重新渲染以`shouldComponentUpdate`的返回值为最终的决定因素。
 ```
 import React, { PureComponent } from 'react'
@@ -131,7 +131,7 @@ class YourComponent extends PureComponent {
 }
 ```
 
-#### ref
+## 3. ref
 React提供的这个ref属性，表示为对组件真正实例的引用，其实就是ReactDOM.render()返回的组件实例,ref可以挂载到组件上也可以是dom元素上。
 
 * 挂到组件(class声明的组件)上的ref表示对组件实例的引用。不能在函数式组件上使用 ref 属性，因为它们没有实例：
@@ -165,10 +165,10 @@ ReactDOM.render(
 )
 ```
 
-## React Hooks
+## 4. React Hooks
 React Hooks 是 React 16.7.0-alpha 版本推出的新特性, 有了React Hooks，在 react 函数组件中，也可以使用类组件（classes components）的 state 和 组件生命周期。通过下面几个例子来学习React Hooks。
 
-#### State Hook
+#### 4.1 State Hook
 ```
 // useState是react包提供的一个方法
 import React, { useState } from "react";
@@ -190,7 +190,7 @@ const rootElement = document.getElementById("root");
 ReactDOM.render(<Counter />, rootElement);
 ```
 
-#### Effect Hook
+#### 4.2 Effect Hook
 ```
 // useState是react包提供的一个方法
 import React, { useState, useEffect } from "react";
@@ -217,11 +217,11 @@ const rootElement = document.getElementById("root");
 ReactDOM.render(<Counter />, rootElement);
 ```
 
-#### React Hooks 的规则
+#### 4.3 React Hooks 的规则
 * 只能在顶层调用Hooks。不要在循环，条件或嵌套函数中调用Hook。
 * 不要从常规JavaScript函数中调用Hook。只在React函数式组件调用Hooks。
 
-#### react 内置hooks api
+#### 4.4 react 内置hooks api
 * Basic Hooks
     - useState
     - useEffect
@@ -236,18 +236,18 @@ ReactDOM.render(<Counter />, rootElement);
     - useDebugValue
 
 
-## 组件通信
+## 5. 组件通信
 
-#### 父组件与子组件通信
+#### 5.1 父组件与子组件通信
 
 * 父组件将自己的状态传递给子组件，子组件当做属性来接收，当父组件更改自己状态的时候，子组件接收到的属性就会发生改变
 * 父组件利用ref对子组件做标记，通过调用子组件的方法以更改子组件的状态,也可以调用子组件的方法..
 
-#### 子组件与父组件通信
+#### 5.2 子组件与父组件通信
 
 * 父组件将自己的某个方法传递给子组件，在方法里可以做任意操作，比如可以更改状态，子组件通过this.props接收到父组件的方法后调用。
 
-#### 跨组件通信
+#### 5.3 跨组件通信
 
 在react没有类似vue中的事件总线来解决这个问题，我们只能借助它们共同的父级组件来实现，将非父子关系装换成多维度的父子关系。react提供了context api来实现跨组件通信, React 16.3之后的contextapi较之前的好用。
 
@@ -346,7 +346,7 @@ class App extends Component {
 
     复杂的非父子组件通信在react中很难处理，多组件间的数据共享也不好处理，在实际的工作中我们会使用flux、redux、mobx来实现
 
-## HOC(高阶组件)
+## 6. HOC(高阶组件)
 Higher-Order Components就是一个函数，传给它一个组件，它返回一个新的组件。
 ```
 const NewComponent = higherOrderComponent(YourComponent)

@@ -1,31 +1,32 @@
 ## 1. 组件的生命周期
-React中组件也有生命周期，也就是说也有很多钩子函数供我们使用, 组件的生命周期，我们会分为四个阶段，初始化、运行中、销毁、错误处理(16.3之后)
+>React中组件也有生命周期，也就是说也有很多钩子函数供我们使用, 组件的生命周期，我们会分为四个阶段，初始化、运行中、销毁、错误处理(16.3之后)
 
 #### 1.1 初始化
 在组件初始化阶段会执行
 
-* `constructor`
-* `static getDerivedStateFromProps()`
+* `constructor` 💎💎💎💎
+* `static getDerivedStateFromProps()` 💎💎
 * `componentWillMount()` / `UNSAFE_componentWillMount()`
-* `render()`
-* `componentDidMount()`
+* `render()`  💎💎💎💎
+* `componentDidMount()`  💎💎💎💎
 
 #### 1.2 更新阶段
 props或state的改变可能会引起组件的更新，组件重新渲染的过程中会调用以下方法：
 
 * `componentWillReceiveProps()` / `UNSAFE_componentWillReceiveProps()`
 * `static getDerivedStateFromProps()`
-* `shouldComponentUpdate()`
+* `shouldComponentUpdate()` 💎💎💎
 * `componentWillUpdate()` / `UNSAFE_componentWillUpdate()`
 * `render()`
 * `getSnapshotBeforeUpdate()`
-* `componentDidUpdate()`
+* `componentDidUpdate()` 💎💎
 
 #### 1.3 卸载阶段
-`componentWillUnmount()`
+`componentWillUnmount()` 💎💎
 
 #### 1.4 错误处理
 `componentDidCatch()`
+![image](http://note.youdao.com/yws/res/8739/B848F849070942EF9B5CBEEE72CBD860)
 
 #### 1.5 各生命周期详解
 
@@ -120,8 +121,184 @@ React不会在组件初始化props时调用这个方法。调用this.setState也
 如果类组件定义了此生命周期方法，则它将成错误边界。在它中调用setState()可以让你在下面的树中捕获未处理的JavaScript错误，并显示一个后备UI。只能使用错误边界从意外异常中恢复; 不要试图将它们用于控制流程。
 
 错误边界只会捕获树中下面组件中的错误。错误边界本身不能捕获错误。
+#### 1.6 演示示例：
+```
+//App.js
+import React,{Component} from 'react';
 
-## 2. PureComponent
+import LifeCycle from './LifeCycle';
+
+export default class extends Component{
+    render(){
+        return (
+            <div>
+                <LifeCycle/>
+            </div>
+        )
+    }
+}
+```
+
+```
+//LifeCycle.js
+import React,{Component} from 'react';
+
+import LifeSon from './LifeSon';
+
+export default class extends Component{
+
+    constructor(props){
+        super(props);
+        console.log('constructor....')
+        this.state = {
+            title:0
+        }
+    }
+    // static getDerivedStateFromProps(nextProps, prevState){
+    //     console.log('getDerivedStateFromProps...')
+    //     return null;
+    // }
+
+    UNSAFE_componentWillMount(){
+        console.log('UNSAFE_componentWillMount...')
+    }
+
+    updateTitle = () =>{
+        this.setState({
+            title:this.state.title + 1
+        })
+    }
+    render(){
+        // console.log('render....')
+
+        return (<div>
+                <h1>hello 1903</h1>
+                <LifeSon title={this.state.title} />
+
+                <button onClick={this.updateTitle}> update </button>
+            </div>)
+    }
+
+    componentDidMount(){
+        console.log('componentDidMount....')
+    }
+}
+```
+```
+//LifeSon.js
+import React,{Component} from 'react';
+
+export default class extends Component{
+
+    constructor(props){
+        super(props);
+    }
+    UNSAFE_componentWillReceiveProps(nextProps){
+        console.log('UNSAFE_componentWillReceiveProps',nextProps)
+    }
+
+    // static getDerivedStateFromProps(nextProps, prevState){
+    //     console.log('getDerivedStateFromProps...')
+    //     return null;
+    // }
+
+    shouldComponentUpdate(nextProps, nextState){
+        console.log('shouldComponentUpdate',nextProps,nextState)
+
+        if(nextProps.title %2 === 0){
+            return true;
+        }else{
+            return false
+        }
+    }
+
+    UNSAFE_componentWillUpdate(nextProps, nextState){
+        console.log('UNSAFE_componentWillUpdate',nextProps,nextState)
+    }
+
+    render(){
+        console.log('render');
+        return(<div>
+                <h1>life son  {this.props.title} </h1>
+                </div>)
+    }
+
+    getSnapshotBeforeUpdate(){
+        console.log('getSnapshotBeforeUpdate');
+        return 100;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot){
+        console.log('getSnapshotBeforeUpdate',prevProps,prevState,snapshot);
+    }
+
+}
+```
+
+#### 1.7 请求数据 💎💎💎💎
+1. 安装axios `npm i axios -S`
+2. 在`componentDidMount`生命周期函数里调用接口，获取数据
+```
+import React,{Component} from 'react';
+import axios from 'axios';
+import './book.css';
+
+export default class extends Component{
+    constructor(props){
+        super(props);
+
+        this.state = {
+            books:[],
+            loading:false
+        }
+    }
+
+    // 在这个生命周期函数里请求接口
+    componentDidMount(){
+        // 请求开始前，设置loading为true，显示loading
+        this.setState({
+            loading:true
+        })
+        axios.get('https://www.easy-mock.com/mock/5d1c66e9e85bc1461e567f67/api/books')
+        .then(res =>{
+            console.log(res)
+            this.setState({
+                books:res.data.collections, //把请求成功的数据保存到state中
+                loading:false  // 把loading设置为false，影藏loading
+            })
+        })
+    }
+
+    render(){
+        // 通过map函数，把数据数组转换成 组件数组
+        let books = this.state.books;
+        let bookComp = books.map( book => 
+            (<li  key={book.id} className="book">
+                <div>{book.title}</div>
+                <div>{book.recommend_comment}</div>
+            </li> )
+        )
+        
+        // 如果loading为true，则显示正在加载，否则显示主页内容
+        if(this.state.loading){
+            return <div>正在加载。。。。</div>
+        }else{
+            return (
+                <div>
+                    <ul>
+                        {bookComp}
+                    </ul>
+                </div>
+            )
+        }
+    }
+}
+```
+
+
+
+
+## 2. PureComponent 💎💎
 PureComponnet里如果接收到的新属性或者是更改后的状态和原属性、原状态相同的话，就不会去重新render了 在里面也可以使用`shouldComponentUpdate`，而且。是否重新渲染以`shouldComponentUpdate`的返回值为最终的决定因素。
 ```
 import React, { PureComponent } from 'react'
@@ -130,8 +307,51 @@ class YourComponent extends PureComponent {
   ……
 }
 ```
+#### 示例代码：
+```
+//父组件
+export default class extends Component{
 
-## 3. ref
+    constructor(){
+        super()
+        this.state = {
+            count:0
+        }
+    }
+    update = () =>{
+        this.setState({
+            count: this.state.count 
+        })
+    } 
+    render() {
+        return(<div>
+                 <MyPur count={this.state.count}/>
+                 <button onClick={this.update}>update</button>
+               </div>)   
+    }
+}
+```
+```
+//子组件，是个PureComponent
+import React, { PureComponent,Component } from 'react'
+
+export default class YourComponent extends PureComponent {
+
+    shouldComponentUpdate(props){
+        console.log(props)
+        return true;
+    }
+    render(){
+        console.log('render...')
+        return (<div>
+                {this.props.count}
+            </div>)
+    }
+}
+```
+
+
+## 3. ref 💎💎💎💎
 React提供的这个ref属性，表示为对组件真正实例的引用，其实就是ReactDOM.render()返回的组件实例,ref可以挂载到组件上也可以是dom元素上。
 
 * 挂到组件(class声明的组件)上的ref表示对组件实例的引用。不能在函数式组件上使用 ref 属性，因为它们没有实例：
@@ -165,10 +385,10 @@ ReactDOM.render(
 )
 ```
 
-## 4. React Hooks
+## 4. React Hooks 
 React Hooks 是 React 16.7.0-alpha 版本推出的新特性, 有了React Hooks，在 react 函数组件中，也可以使用类组件（classes components）的 state 和 组件生命周期。通过下面几个例子来学习React Hooks。
 
-#### 4.1 State Hook
+#### 4.1 State Hook 💎💎💎
 ```
 // useState是react包提供的一个方法
 import React, { useState } from "react";
@@ -190,7 +410,7 @@ const rootElement = document.getElementById("root");
 ReactDOM.render(<Counter />, rootElement);
 ```
 
-#### 4.2 Effect Hook
+#### 4.2 Effect Hook 💎💎💎
 ```
 // useState是react包提供的一个方法
 import React, { useState, useEffect } from "react";
@@ -216,6 +436,37 @@ const rootElement = document.getElementById("root");
 
 ReactDOM.render(<Counter />, rootElement);
 ```
+##### 示例代码：
+```
+import React,{useState,useEffect} from  'react';
+
+import axios from 'axios';
+
+const Series = () =>{
+    // 使用 State Hook
+    let [series,updateSeries] = useState([]);
+
+    // 使用Effect Hook，在此请求数据
+    useEffect(()=>{
+        axios.get('https://www.easy-mock.com/mock/5d1c66e9e85bc1461e567f67/api/series')
+        .then(res=>{
+            console.log(res)
+            updateSeries(res.data.collections)
+        })
+    })
+
+    return <div>
+            <ul>
+            {series.map( se =>{
+                return <li ket={se.id}>{se.title}</li>
+            })}
+            </ul>
+        </div>
+}
+
+export default Series;
+```
+
 
 #### 4.3 React Hooks 的规则
 * 只能在顶层调用Hooks。不要在循环，条件或嵌套函数中调用Hook。
@@ -238,109 +489,150 @@ ReactDOM.render(<Counter />, rootElement);
 
 ## 5. 组件通信
 
-#### 5.1 父组件与子组件通信
+#### 5.1 父组件与子组件通信 💎💎💎💎
 
 * 父组件将自己的状态传递给子组件，子组件当做属性来接收，当父组件更改自己状态的时候，子组件接收到的属性就会发生改变
 * 父组件利用ref对子组件做标记，通过调用子组件的方法以更改子组件的状态,也可以调用子组件的方法..
 
-#### 5.2 子组件与父组件通信
+#### 5.2 子组件与父组件通信 💎💎💎
 
 * 父组件将自己的某个方法传递给子组件，在方法里可以做任意操作，比如可以更改状态，子组件通过this.props接收到父组件的方法后调用。
 
-#### 5.3 跨组件通信
+#### 5.3 跨组件通信 💎💎💎
 
-在react没有类似vue中的事件总线来解决这个问题，我们只能借助它们共同的父级组件来实现，将非父子关系装换成多维度的父子关系。react提供了context api来实现跨组件通信, React 16.3之后的contextapi较之前的好用。
+> 在react没有类似vue中的事件总线来解决这个问题，我们只能借助它们共同的父级组件来实现，将非父子关系装换成多维度的父子关系。        
+react提供了context api来实现跨组件通信, React 16.3之后的context api较之前的好用。
+
+
+##### context api:
+* React.createContext()
+* Provider
+* Consumer
+
+
+##### React.createContext()
+> 这个方法用来创建context对象，并包含Provider、Consumer两个组件 <Provider />、<Consumer />
+
+示例:  
+```
+const {Provider, Consumer} = React.createContext();
+```
+
+
+##### Provider
+>数据的生产者，通过value属性接收存储的公共状态，来传递给子组件或后代组件  
+
+示例:   
+```
+<Provider value={/* some value */}>
+```
+
+##### Consumer
+>数据的消费者，通过订阅Provider传入的context的值，来实时更新当前组件的状态
+
+示例： 
+```
+<Consumer>
+  {value => /* render something based on the context value */}
+</Consumer>
+```
+
+==每当Provider的值发生改变时, 作为Provider后代的所有Consumers都会重新渲染==
+![prop vs context](http://note.youdao.com/yws/res/8784/9DB1C98739DB40C49523605441864505)
+
 
 实例，使用context 实现购物车中的加减功能
 ```
-// counterContext.js
-import React, { Component, createContext } from 'react'
+import React,{Component,createContext} from 'react';
 
-const {
-  Provider,
-  Consumer: CountConsumer
-} = createContext()
+const {Provider,Consumer} = createContext();
 
-class CountProvider extends Component {
-  constructor () {
-    super()
-    this.state = {
-      count: 1
+// 定义一个容器组件，内部使用Provider封装，提供数据
+class Container extends Component{
+
+    constructor(){
+        super()
+        this.state = {
+            number:0
+        }
+        this.increase = this.increase.bind(this);
+        this.decrease = this.decrease.bind(this);
     }
-  }
-  increaseCount = () => {
-    this.setState({
-      count: this.state.count + 1
-    })
-  }
-  decreaseCount = () => {
-    this.setState({
-      count: this.state.count - 1
-    })
-  }
-  render() {
-    return (
-      <Provider value={{
-        count: this.state.count,
-        increaseCount: this.increaseCount,
-        decreaseCount: this.decreaseCount
-      }}
-      >
-        {this.props.children}
-      </Provider>
-    )
-  }
+    increase(){
+        this.setState({
+            number:this.state.number + 1
+        })
+    }
+
+    decrease(){
+        this.setState({
+            number:this.state.number - 1
+        })
+    }
+
+    render(){
+        return (
+            <Provider value={{
+                number:this.state.number,
+                increase:this.increase,
+                decrease:this.decrease
+            }}>
+            {this.props.children}
+            </Provider>
+        )
+    }
+}
+// 显示数据的组件
+const NumberLabel = () =>{
+    return (<Consumer>
+            { ({number})=>{
+                return <div>{number}</div>
+            }}
+        </Consumer>)
 }
 
-export {
-  CountProvider,
-  CountConsumer
-}
-```
+// const AddBtn = () =>{
+//     return (<Consumer>
+//         {({increase})=>{
+//             return <button onClick={increase}> + </button>
+//         }}
+//         </Consumer>)
+// }
 
-```
-// 定义CountButton组件
-const CountButton = (props) => {
-  return (
-    <CountConsumer>
-      // consumer的children必须是一个方法
-      {
-        ({ increaseCount, decreaseCount }) => {
-          const { type } = props
-          const handleClick = type === 'increase' ? increaseCount : decreaseCount
-          const btnText = type === 'increase' ? '+' : '-'
-          return <button onClick={handleClick}>{btnText}</button>
-        }
-      }
-    </CountConsumer>
-  )
-}
-```
+// const MinBtn = () =>{
+//     return (<Consumer>
+//         {({decrease})=>{
+//             return <button onClick={decrease}> - </button>
+//         }}
+//         </Consumer>)
+// }
 
-```
-// 定义count组件，用于显示数量
-const Count = (prop) => {
-  return (
-    <CountConsumer>
-      {
-        ({ count }) => {
-          return <span>{count}</span>
-        }
-      }
-    </CountConsumer>
-  )
+// 修改数据的按钮，使用<Consumer>组件封装，内部就可以获取 Provider上的数据
+const  NumberBtn = ({type}) =>{
+    return (<Consumer>
+        
+        {({increase,decrease})=>{
+
+            return <button 
+                    onClick={type === 'inc' ? increase : decrease}>
+                    {type === "inc" ? "+" : "-"}
+                    </button>
+
+        }}
+        </Consumer>)
 }
-// 组合
-class App extends Component {
-  render () {
-    return (
-  		<CountProvider>
-        <CountButton type='decrease' />
-        <Count />
-        <CountButton type='increase' />
-      </CountProvider>
-  	)
-  }
+
+export  default class extends Component{
+
+    render(){
+        return (
+            <Container>
+                <NumberBtn type="dec"/>
+                <NumberLabel/>
+                <NumberBtn type="inc"/>
+            </Container>
+        )
+    }
 }
 ```
 
@@ -353,39 +645,43 @@ const NewComponent = higherOrderComponent(YourComponent)
 ```
 比如，我们想要我们的组件通过自动注入一个版权信息。
 ```
-// withCopyright.js 定义一个高阶组件
-import React, { Component, Fragment } from 'react'
+import React,{Component} from 'react';
 
-const withCopyright = (WrappedComponent) => {
-  return class NewComponent extends Component {
-    render() {
-      return (
-        <Fragment>
-          <WrappedComponent />
-          <div>&copy;版权所有 千锋教育 2019 </div>
-        </Fragment>
-      )
+
+const copyRight = (ComponentReadyToWrapp) => {
+
+    return () =>{
+        return (<div>
+                <ComponentReadyToWrapp/>
+                <h6> 作者：Davie </h6>
+                <h6> 邮箱：iscooleye@163.com </h6>
+            </div>)
     }
-  }
 }
-export default withCopyright
-```
-```
-// 使用方式
-import withCopyright from './withCopyright'
 
-class App extends Component {
-  render () {
-    return (
-  		<div>
-        <h1>Awesome React</h1>
-        <p>React.js是一个构建用户界面的库</p>
-      </div>
-  	)
-  }
+const Book = () =>{
+    return <h1> Vue从入门到放弃 </h1>
 }
-const CopyrightApp = withCopyright(App)
+
+const BookJZB = () =>{
+    return <h2> 编程从入门到颈椎病治疗 </h2>
+}
+
+// 函数式编程
+// let Book1 = copyRight(Book)("davie","is@11.com");
+let Book1 = copyRight(Book);
+let Book2 = copyRight(BookJZB);
+
+
+const App = () =>{
+    return (
+        <div>
+            <Book1/>
+            <Book2/>
+        </div>
+    )
+}
+
+export default App;
 ```
 这样只要我们有需要用到版权信息的组件，都可以直接使用withCopyright这个高阶组件包裹即可。
-
-在这里要讲解在CRA 中配置装饰器模式的支持
